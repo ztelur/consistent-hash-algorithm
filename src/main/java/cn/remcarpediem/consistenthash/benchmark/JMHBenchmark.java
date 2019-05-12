@@ -26,7 +26,7 @@ public class JMHBenchmark {
     private List<String> keys;
 
     @Benchmark
-    public void sleepAWhile() {
+    public void test() {
         for (String key : keys) {
             MemcachedNode node = nodeLocator.getPrimary(key);
         }
@@ -49,7 +49,7 @@ public class JMHBenchmark {
         for (String ip : ips) {
             servers.add(new MemcachedNode(new InetSocketAddress(ip, 8080)));
         }
-        nodeLocator = new ConsistentHashNodeLocator(servers, DefaultHashAlgorithm.MURMUR_HASH);
+        nodeLocator = new ConsistentHashNodeLocator(servers, DefaultHashAlgorithm.KETAMA_HASH);
         // 构造 50000 随机请求
         keys = new ArrayList<>();
         for (int i = 0; i < 50000; i++) {

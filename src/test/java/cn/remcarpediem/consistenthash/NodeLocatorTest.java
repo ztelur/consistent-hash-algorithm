@@ -20,7 +20,7 @@ public class NodeLocatorTest {
         for (String ip : ips) {
             servers.add(new MemcachedNode(new InetSocketAddress(ip, 8080)));
         }
-        NodeLocator nodeLocator = new ConsistentHashNodeLocator(servers, DefaultHashAlgorithm.NATIVE_HASH);
+        NodeLocator nodeLocator = new ConsistentHashNodeLocator(servers, DefaultHashAlgorithm.KETAMA_HASH);
         // 构造 50000 随机请求
         List<String> keys = new ArrayList<>();
         for (int i = 0; i < 50000; i++) {
@@ -52,12 +52,12 @@ public class NodeLocatorTest {
         /* 随机下线10个服务器, 先shuffle，然后选择0到90，简单模仿随机算出的目的 */
 //        Collections.shuffle(servers);
         List<MemcachedNode> serverChanged = servers.subList(0, 90);
-        NodeLocator loadBalance = new ConsistentHashNodeLocator(servers, DefaultHashAlgorithm.NATIVE_HASH);
-        NodeLocator changedLoadBalance = new ConsistentHashNodeLocator(serverChanged, DefaultHashAlgorithm.NATIVE_HASH);
+        NodeLocator loadBalance = new ConsistentHashNodeLocator(servers, DefaultHashAlgorithm.KETAMA_HASH);
+        NodeLocator changedLoadBalance = new ConsistentHashNodeLocator(serverChanged, DefaultHashAlgorithm.KETAMA_HASH);
 
         // 构造 50000 随机请求
         List<String> keys = new ArrayList<>();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 50000; i++) {
             keys.add(UUID.randomUUID().toString());
         }
         int count = 0;
@@ -66,7 +66,7 @@ public class NodeLocatorTest {
             MemcachedNode changed = changedLoadBalance.getPrimary(invocation);
             if (!origin.getSocketAddress().equals(changed.getSocketAddress())) count++;
         }
-        System.out.println(count / 10000D);
+        System.out.println(count / 50000D);
     }
 
 
