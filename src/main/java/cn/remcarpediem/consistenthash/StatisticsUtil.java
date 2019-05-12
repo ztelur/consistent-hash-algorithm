@@ -1,9 +1,5 @@
 package cn.remcarpediem.consistenthash;
 
-/**
- * @author daofeng.xjf
- * @date 2019/2/16
- */
 public class StatisticsUtil {
 
     //方差s^2=[(x1-x)^2 +...(xn-x)^2]/n

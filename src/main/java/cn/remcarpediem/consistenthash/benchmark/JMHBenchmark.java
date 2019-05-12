@@ -50,9 +50,9 @@ public class JMHBenchmark {
             servers.add(new MemcachedNode(new InetSocketAddress(ip, 8080)));
         }
         nodeLocator = new ConsistentHashNodeLocator(servers, DefaultHashAlgorithm.MURMUR_HASH);
-        // 构造 10000 随机请求
+        // 构造 50000 随机请求
         keys = new ArrayList<>();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 50000; i++) {
             keys.add(UUID.randomUUID().toString());
         }
 
